@@ -1,0 +1,8 @@
+www 
+api
+mail
+dev
+shop
+blog
+test
+admin
