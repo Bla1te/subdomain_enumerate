@@ -1,6 +1,12 @@
 
 
 def load_subdamins_list(path: str) -> list:
-    with open('subdomains.txt') as f:   
-        subdomains = [i[:len(i)-1] for i in f ]
+    subdomains = list()
+    with open(path) as f:   
+        for i in f:
+            if i[len(i)-1] == '\n':
+                subdomains.append(i[:len(i)-1])
+            else:
+                subdomains.append(i)
+
     return subdomains
