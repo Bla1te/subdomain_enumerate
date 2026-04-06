@@ -1,6 +1,6 @@
 import unittest
-from usecases.func import get_subdomain_list
-
+from usecases.func import get_subdomain_list, get_subdomain_list_crt
+from unittest.mock import patch
 import asyncio
 
 def get_ip(domain: str) -> str:
@@ -16,3 +16,18 @@ class TestGetList(unittest.TestCase):
         self.assertEqual(len(res), 2)
         self.assertEqual(res[0].name, '1.test.com', res[0].ip,'1.1.1.1')
         self.assertEqual(res[1].name, '2.test.com', res[1].ip,'1.1.1.1')
+
+    
+    @patch('requests.get')
+    def test_get_subdomain_list_crt(self, req_get):
+        import json
+
+        req_get.return_value.json.return_value = [
+        {"name_value": "www.test.ru\napi.test.ru"}
+    ]
+        res = get_subdomain_list_crt('test.ru')
+
+        self.assertEqual(len(res), 2)
+        self.assertEqual(res[0], 'www.test.ru')
+        self.assertEqual(res[1], 'api.test.ru')
+
